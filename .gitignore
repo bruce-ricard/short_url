@@ -1,4 +1,33 @@
+# Emacs temp files
+
 *~
-#*#
+\#*\#
+
+# OCaml build files
+
 *.cm*
 *.o
+short
+short.run
+library/short_test
+library/short_test.run
+
+# OMake files
+
+.depend
+*.omc
+.omakedb
+.omakedb.lock
+
+# Oasis generated files
+
+library/_tags
+library/myocamlbuild.ml
+library/setup.ml
+
+# Eliom generated files
+
+service/_client/
+service/_deps/
+service/_server/
+service/local/
