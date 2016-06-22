@@ -2,3 +2,8 @@
 #*#
 *.cm*
 *.o
+.depend
+service/_client/
+service/_deps/
+service/_server/
+service/local/
