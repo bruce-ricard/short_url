@@ -3,6 +3,9 @@
 *.cm*
 *.o
 .depend
+*.omc
+.omakedb
+.omakedb.lock
 service/_client/
 service/_deps/
 service/_server/
