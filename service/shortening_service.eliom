@@ -39,12 +39,11 @@ let result_page long_url short_url =
                pcdata short_url
              ]])
 
-
 let () =
     Shortening_service_app.register
       ~service:form_service
       (fun () long_url ->
-       let short_url = "short_url_test42" in
+       let short_url = Short.TestShortener.shorten long_url in
        Lwt.return (result_page long_url short_url)
       )
 
