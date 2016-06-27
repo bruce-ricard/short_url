@@ -21,7 +21,7 @@
 # Phony targets are scoped, so you probably want to declare them first.
 #
 
-.PHONY: bin lib clean
+.PHONY: all bin lib clean
 
 ########################################################################
 # Subdirectories.
@@ -103,6 +103,8 @@ PROGRAM = short
 # OCAML_LIB_FLAGS +=
 #
 bin: $(OCamlProgram $(PROGRAM), $(FILES))
+
+all: bin lib
 
 clean:
 	rm -f *.cm? *.cmx* *.o *.a short short.run
