@@ -19,6 +19,12 @@ library/short_test.run
 .omakedb
 .omakedb.lock
 
+# Oasis generated files
+
+library/_tags
+library/myocamlbuild.ml
+library/setup.ml
+
 # Eliom generated files
 
 service/_client/
