@@ -61,14 +61,3 @@ module TestGenerator : UNIQUE_ID_GENERATOR =
   end
 
 module TestShortener = UrlShortener(TestStore)(TestGenerator)
-
-
-let main () =
-  let open TestShortener in
-  let l1 = "www.google.com"
-  and l2 = "www.yahoo.com" in
-  let _ = shorten l1
-  and _ = shorten l2 in
-  print_data ()
-
-let () = main ()

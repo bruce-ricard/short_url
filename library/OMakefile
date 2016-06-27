@@ -92,11 +92,11 @@ lib: $(OCamlLibrary $(LIB), $(FILES))
 # Build an OCaml program
 #
 
-# FILES[] =
-#    file1
-#    file2
+FILES[] =
+   short
+   test
 #
-PROGRAM = short
+PROGRAM = short_test
 # OCAML_LIBS +=
 # OCAML_CLIBS +=
 # OCAML_OTHER_LIBS +=
