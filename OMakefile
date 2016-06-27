@@ -18,7 +18,7 @@
 # The standard OMakefile.
 # You will usually need to modify this file for your project.
 
-.PHONY: all install clean
+.PHONY: all install clean test.byte
 
 ########################################################################
 # Subdirectories.
