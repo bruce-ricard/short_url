@@ -1,11 +1,24 @@
+# Emacs temp files
+
 *~
-#*#
+\#*\#
+
+# OCaml build files
+
 *.cm*
 *.o
+short
+short.run
+
+# OMake files
+
 .depend
 *.omc
 .omakedb
 .omakedb.lock
+
+# Eliom generated files
+
 service/_client/
 service/_deps/
 service/_server/
