@@ -9,6 +9,8 @@
 *.o
 short
 short.run
+library/short_test
+library/short_test.run
 
 # OMake files
 
