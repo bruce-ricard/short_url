@@ -19,6 +19,21 @@ let form_service =
     ~post_params:Eliom_parameter.(string "long_url")
     ()
 
+let redirection_service =
+  Eliom_registration.String_redirection.register_service
+    ~path:[]
+    ~get_params:(Eliom_parameter.suffix (Eliom_parameter.string "short_url"))
+    (fun short_url () ->
+     let long_url =
+       match
+         Short.TestShortener.lookup (Short.TestStore.ShortUrl short_url)
+       with
+         None -> (print_endline ("Couldn't find url " ^ short_url) ; "http://www.google.com")
+       | Some (Short.TestStore.LongUrl long_url) -> long_url
+     in
+     Lwt.return long_url
+    )
+
 let create_form long_url =
   [p [
        pcdata "Enter an URL to shorten: ";
