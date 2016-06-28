@@ -22,14 +22,14 @@ let form_service =
 let redirection_service =
   Eliom_registration.String_redirection.register_service
     ~path:[]
-    ~get_params:(Eliom_parameter.suffix (Eliom_parameter.string "short_url"))
-    (fun short_url () ->
+    ~get_params:(Eliom_parameter.suffix (Eliom_parameter.string "id"))
+    (fun id () ->
      let long_url =
        match
-         Short.TestShortener.lookup (Short.TestStore.ShortUrl short_url)
+         Short.TestShortener.lookup (Short.ID id)
        with
-         None -> (print_endline ("Couldn't find url " ^ short_url) ; "http://www.google.com")
-       | Some (Short.TestStore.LongUrl long_url) -> long_url
+         None -> (print_endline ("Couldn't find id " ^ id) ; "http://www.google.com")
+       | Some (Short.LongUrl long_url) -> long_url
      in
      Lwt.return long_url
     )
@@ -58,7 +58,7 @@ let () =
     Shortening_service_app.register
       ~service:form_service
       (fun () long_url ->
-       let short_url = Short.TestShortener.shorten long_url in
+       let Short.ShortUrl short_url = Short.TestShortener.shorten (Short.LongUrl long_url) in
        Lwt.return (result_page long_url short_url)
       )
 

@@ -1,8 +1,13 @@
+type url = string
+type long_url = LongUrl of url
+type short_url = ShortUrl of url
+type unique_url_id = ID of string
+
 module type KEY_VALUE_STORE =
   sig
     type t
-    type key = ShortUrl of string
-    type value = LongUrl of string
+    type key = unique_url_id
+    type value = long_url
     val fetch_store : unit -> t
     val put : t -> key -> value -> unit
     val get : t -> key -> value option
@@ -14,7 +19,7 @@ module type UNIQUE_ID_GENERATOR =
   sig
     type t
     val fetch : unit -> t
-    val get : t -> string
+    val get : t -> unique_url_id
   end
 
 module UrlShortener
@@ -26,14 +31,14 @@ module UrlShortener
     let key_value_store = KeyValueStore.fetch_store ()
     let id_generator = UniqueIDGenerator.fetch ()
 
-    let make_short_url id =
-      short_server ^ id
+    let make_short_url (ID id) =
+      ShortUrl (short_server ^ id)
 
-    let shorten_and_store_url long_url =
+    let shorten_and_store_url (LongUrl long_url) =
       let new_short_id = UniqueIDGenerator.get id_generator in
       let new_short_url = make_short_url new_short_id in
       let open KeyValueStore in
-      KeyValueStore.put key_value_store (ShortUrl new_short_url) (LongUrl long_url);
+      KeyValueStore.put key_value_store new_short_id (LongUrl long_url);
       new_short_url
 
     let shorten = shorten_and_store_url
@@ -45,12 +50,12 @@ module UrlShortener
 
 module TestStore : KEY_VALUE_STORE =
   struct
-    type key = ShortUrl of string
-    type value = LongUrl of string
+    type key = unique_url_id
+    type value = long_url
     type t = (key, value) Hashtbl.t
 
     let fetch_store () = Hashtbl.create 100
-    let print t = Hashtbl.iter (fun (ShortUrl s) (LongUrl l) -> print_endline (s ^ " shortens " ^ l)) t
+    let print t = Hashtbl.iter (fun (ID id) (LongUrl l) -> print_endline (id ^ " shortens " ^ l)) t
 
     let put t x = print t; Hashtbl.add t x
     let get table key =
@@ -64,7 +69,7 @@ module TestGenerator : UNIQUE_ID_GENERATOR =
   struct
     type t = int ref
     let fetch () = ref 0
-    let get r = incr r; string_of_int (!r)
+    let get r = incr r; ID (string_of_int (!r))
   end
 
 module TestShortener = UrlShortener(TestStore)(TestGenerator)
