@@ -19,19 +19,23 @@ let form_service =
     ~post_params:Eliom_parameter.(string "long_url")
     ()
 
+let short_id_not_found_page short_id =
+  (html
+     (head (title (pcdata "Unkown short ID")) [])
+     (body [p [pcdata ("Unkown short ID " ^ short_id)]])
+  )
+
 let redirection_service =
   Eliom_registration.Any.register_service
     ~path:[]
     ~get_params:(Eliom_parameter.suffix (Eliom_parameter.string "id"))
-    (fun id () ->
+    (fun short_id () ->
      match
-       Short.TestShortener.lookup (Short.ID id)
+       Short.TestShortener.lookup (Short.ID short_id)
      with
        None -> Eliom_registration.Html5.send
                  ~code:404
-                 (html
-                    (head (title (pcdata "Unkown short ID")) [])
-                              (body [p [pcdata ("Unkown short ID " ^ id)]]))
+                 (short_id_not_found_page short_id)
      | Some (Short.LongUrl long_url) -> Eliom_registration.String_redirection.send ~options:`SeeOther long_url
     )
 
@@ -55,6 +59,14 @@ let result_page long_url short_url =
                pcdata short_url
              ]])
 
+let main_page () =
+  (body
+     [
+       h1 [pcdata "Welcome to this URL shortening service."];
+       post_form ()
+     ]
+  )
+
 let () =
     Shortening_service_app.register
       ~service:form_service
@@ -71,11 +83,6 @@ let () =
         (Eliom_tools.F.html
            ~title:"shortening_service"
            ~css:[["css";"shortening_service.css"]]
-           (body
-                      [
-                        h1 [pcdata "Welcome to this URL shortening service."];
-                        post_form ()
-                      ]
-           )
+           (main_page ())
         )
     )
