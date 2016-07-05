@@ -32,7 +32,7 @@ let redirection_service =
                  (html
                     (head (title (pcdata "Unkown short ID")) [])
                               (body [p [pcdata ("Unkown short ID " ^ id)]]))
-     | Some (Short.LongUrl long_url) -> Eliom_registration.String_redirection.send long_url
+     | Some (Short.LongUrl long_url) -> Eliom_registration.String_redirection.send ~options:`SeeOther long_url
     )
 
 let create_form long_url =
