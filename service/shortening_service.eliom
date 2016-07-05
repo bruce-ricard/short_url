@@ -20,18 +20,19 @@ let form_service =
     ()
 
 let redirection_service =
-  Eliom_registration.String_redirection.register_service
+  Eliom_registration.Any.register_service
     ~path:[]
     ~get_params:(Eliom_parameter.suffix (Eliom_parameter.string "id"))
     (fun id () ->
-     let long_url =
-       match
-         Short.TestShortener.lookup (Short.ID id)
-       with
-         None -> (print_endline ("Couldn't find id " ^ id) ; "http://www.google.com")
-       | Some (Short.LongUrl long_url) -> long_url
-     in
-     Lwt.return long_url
+     match
+       Short.TestShortener.lookup (Short.ID id)
+     with
+       None -> Eliom_registration.Html5.send
+                 ~code:404
+                 (html
+                    (head (title (pcdata "Unkown short ID")) [])
+                              (body [p [pcdata ("Unkown short ID " ^ id)]]))
+     | Some (Short.LongUrl long_url) -> Eliom_registration.String_redirection.send long_url
     )
 
 let create_form long_url =
