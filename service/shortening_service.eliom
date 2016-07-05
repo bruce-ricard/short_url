@@ -62,7 +62,7 @@ let result_page long_url short_url =
 let main_page () =
   (body
      [
-       h1 [pcdata "Welcome to this URL shortening service."];
+       h1 [pcdata "Welcome to Bruce's URL shortening service."];
        post_form ()
      ]
   )
