@@ -41,7 +41,7 @@ let redirection_service =
 
 let create_form long_url =
   [p [
-       pcdata "Enter an URL to shorten: ";
+       pcdata "Enter a full valid URL to shorten (starts with \"http://\"): ";
        Form.input ~input_type:`Text ~name:long_url Form.string;
        Form.input ~input_type:`Submit ~value:"Shorten" Form.string
      ]
